@@ -27,6 +27,11 @@ Vue.use(VueRouter)
     path: '/2-3',
     name: 'axios并发请求',
     component: () => import('@/views/2-3')
+  },
+  {
+    path: '/contact-list',
+    name: '联系人列表',
+    component: () => import('@/views/ContactList')
   }
 ]
 
