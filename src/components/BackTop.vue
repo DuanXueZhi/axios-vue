@@ -11,7 +11,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
   .pages-content-scroll {
     position: absolute;
     top: 0;

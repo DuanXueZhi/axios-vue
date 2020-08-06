@@ -1,7 +1,6 @@
 <template>
   <div>
     <p v-for="item in list" :key="item">{{ item }}</p>
-    <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
   </div>
 </template>
 
