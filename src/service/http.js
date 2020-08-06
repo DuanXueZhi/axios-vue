@@ -12,13 +12,13 @@ const Http = {} // 包裹请求方法的容器
 // 请求格式/参数的统一
 for (let key in service) {
   let api = service[key] // url method
-  Http[key] = async function (params, isFormData, config) {
+  Http[key] = async function (params, isFormData, config = {}) {
     let newParams = {}
     // content-type是否是form-data的判断
     if (params && isFormData) {
-      newParams = new FormData
+      newParams = new FormData()
       for (let i in params) {
-        newParams.append(key, params[i])
+        newParams.append(i, params[i])
       }
     } else {
       newParams = params
@@ -27,14 +27,14 @@ for (let key in service) {
     let response = {} // 请求返回值
     if (api.method === 'put' || api.method === 'post' || api.method === 'patch') {
       try {
-        await instance[api.method](api.url, newParams, config)
+        response = await instance[api.method](api.url, newParams, config)
       } catch (err) {
         response = err
       }
     } else if (api.method === 'delete') {
       config.params = newParams // config.data = newParams
       try {
-        await instance[api.method](api.url, config)
+        response = await instance[api.method](api.url, config)
       } catch (err) {
         response = err
       }
@@ -42,7 +42,7 @@ for (let key in service) {
       // get请求
       config.params = newParams
       try {
-        await instance[api.method](api.url, config)
+        response = await instance[api.method](api.url, config)
       } catch (err) {
         response = err
       }
@@ -52,7 +52,7 @@ for (let key in service) {
 }
 
 // 拦截器
-instance.interceptors.request.use(() => {
+instance.interceptors.request.use(config => {
  // 发起前
   Toast.loading({
     mask: false,
@@ -60,19 +60,21 @@ instance.interceptors.request.use(() => {
     forbidClick: true, // 禁止点击
     message: '加载中'
   })
-}, () => {
+  return config
+}, err => {
   // 请求错误
   Toast.clear()
-  Toast('请求错误，请稍后重试')
+  Toast(`相应失败，请稍后重试${err}`)
 })
 // 相应拦截器
 instance.interceptors.response.use(res => {
-  // 请求成功
   Toast.clear()
-  return res.data
-}, () => {
+  if (res.status === 200) {
+    return res.data
+  }
+}, err => {
   Toast.clear()
-  Toast('相应失败，请稍后重试')
+  Toast(`相应失败，请稍后重试${err}`)
 })
 
 export default Http
