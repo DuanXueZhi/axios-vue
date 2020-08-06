@@ -55,7 +55,7 @@ export default {
     // 获取联系人列表
     getList() {
       this.instance.get('/contactList').then(res => {
-        this.list = res.data.data
+        this.list = Object.freeze(res.data.data)
       }).catch(err => {
         Toast(`请求失败，请稍后重试${err}`)
       })
