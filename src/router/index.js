@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
@@ -32,6 +32,16 @@ Vue.use(VueRouter)
     path: '/contact-list',
     name: '联系人列表',
     component: () => import('@/views/ContactList')
+  },
+  {
+    path: '/backTopOne',
+    name: 'backTopOne',
+    component: () => import('@/views/element_ui_custom_packaging/backTopOne')
+  },
+  {
+    path: '/backTopTwo',
+    name: 'backTopTwo',
+    component: () => import('@/views/element_ui_custom_packaging/backTopTwo')
   }
 ]
 
