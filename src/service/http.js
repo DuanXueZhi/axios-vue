@@ -1,5 +1,6 @@
 import axios from 'axios'
 import service from './contactApi'
+import { Toast } from 'vant'
 
 // service 循环遍历输出不同的请求方法
 let instance = axios.create({
@@ -49,3 +50,29 @@ for (let key in service) {
     return response // 返回响应值
   }
 }
+
+// 拦截器
+instance.interceptors.request.use(() => {
+ // 发起前
+  Toast.loading({
+    mask: false,
+    duration: 0, // 一直存在
+    forbidClick: true, // 禁止点击
+    message: '加载中'
+  })
+}, () => {
+  // 请求错误
+  Toast.clear()
+  Toast('请求错误，请稍后重试')
+})
+// 相应拦截器
+instance.interceptors.response.use(res => {
+  // 请求成功
+  Toast.clear()
+  return res.data
+}, () => {
+  Toast.clear()
+  Toast('相应失败，请稍后重试')
+})
+
+export default Http
