@@ -53,12 +53,9 @@ export default {
   },
   methods: {
     // 获取联系人列表
-    getList() {
-      this.instance.get('/contactList').then(res => {
-        this.list = Object.freeze(res.data.data)
-      }).catch(err => {
-        Toast(`请求失败，请稍后重试${err}`)
-      })
+    async getList() {
+      let res = await this.$Http.getContactList()
+      this.list = Object.freeze(res.data)
     },
 
     // 添加联系人
@@ -75,41 +72,32 @@ export default {
     },
 
     // 保存联系人
-    onSave(info) {
+    async onSave(info) {
       if (this.isEdit) { // 编辑保存
-        this.instance.put('/contact/edit', info).then(res => {
-          if (res.data.code === 200) {
-            Toast('编辑成功')
-            this.showEdit = false
-            this.getList()
-          }
-        }).catch(err => {
-          Toast(`请求失败，请稍后再试${err}`)
-        })
+        let res = await this.$Http.editContact(info)
+        if (res.code === 200) {
+          Toast('编辑成功')
+          this.showEdit = false
+          await this.getList()
+        }
       } else { // 新建保存
-        this.instance.post('/contact/new/json', info).then(res => {
-          if (res.data.code === 200) {
-            Toast('新建成功')
-            this.showEdit = false
-            this.getList()
-          }
-        }).catch(err => {
-          Toast(`请求失败${err}`)
-        })
+        let res = await this.$Http.newContactForm(info, true)
+        if (res.code === 200) {
+          Toast('新建成功')
+          this.showEdit = false
+          await this.getList()
+        }
       }
     },
 
     // 删除联系人
-    onDelete(info) {
-      this.instance.delete('/contact', { params: { id: info.id }}).then(res => {
-        if (res.data.code === 200) {
-          Toast('删除成功')
-          this.showEdit = false
-          this.getList()
-        }
-      }).catch(err => {
-        Toast(`请求失败${err}`)
-      })
+    async onDelete(info) {
+      let res = await this.$Http.delContact({ id: info.id })
+      if (res.code === 200) {
+        Toast('删除成功')
+        this.showEdit = false
+        await this.getList()
+      }
     },
   }
 }
