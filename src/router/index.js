@@ -42,6 +42,11 @@ const routes = [
     path: '/backTopTwo',
     name: 'backTopTwo',
     component: () => import('@/views/element_ui_custom_packaging/backTopTwo')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/element_ui_custom_packaging/login')
   }
 ]
 

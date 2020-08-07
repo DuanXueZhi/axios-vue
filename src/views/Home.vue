@@ -4,6 +4,7 @@
     <HelloWorld msg="Welcome to Your Vue.js App"/>
     <el-button type="primary" @click="goTo('backTopOne')">backTop页面1</el-button>
     <el-button type="primary" @click="goTo('backTopTwo')">backTop页面1</el-button>
+    <el-button type="primary" @click="goTo('login')">login页面1</el-button>
   </div>
 </template>
 
