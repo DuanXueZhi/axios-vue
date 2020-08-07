@@ -4,6 +4,10 @@
     <div class="account">
       <account-login :rule-form="ruleForm" :rules="rules" @submit="submit" @errHandle="errHandle"></account-login>
     </div>
+    <h1>短信登录组件</h1>
+    <div class="account">
+      <phone-login :phone-form="phoneForm" @send="send" @submit="submit" @errHandle="errHandle"></phone-login>
+    </div>
   </div>
 </template>
 
@@ -25,6 +29,10 @@ export default {
           {required: true, message: '用户密码不为空', trigger: 'blur'},
           {min: 6, max: 15, message: '用户密码在6-15个字符之间', trigger: 'blur'}
         ]
+      },
+      phoneForm: {
+        phone: '',
+        code: ''
       }
     }
   },
@@ -34,6 +42,9 @@ export default {
     },
     errHandle() {
       this.$message.error('表单填写有误，请检查')
+    },
+    send() {
+      this.$message.info('发送验证码')
     }
   }
 }
